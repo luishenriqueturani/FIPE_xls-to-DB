@@ -19,7 +19,7 @@ public class Connector {
     super();
     hostName = "localhost";
     userName = "root";
-    password = "";
+    password = "1234";
     jdbcDriver = "org.mariadb.jdbc.Driver";
     dataBaseName = "fipe";
     dataBasePrefix = "jdbc:mariadb://";

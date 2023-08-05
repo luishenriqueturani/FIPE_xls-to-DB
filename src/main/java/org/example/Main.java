@@ -38,9 +38,9 @@ public class Main {
 
       Sheet sheet = workbook.getSheetAt(0);
 
-      /*Connector con = new Connector();
+      Connector con = new Connector();
 
-      con.getConnection();*/
+      con.getConnection();
 
       Learn learn = new Learn();
 
@@ -93,7 +93,7 @@ public class Main {
       workbook.close();
       fis.close();
 
-      //con.closeConnection();
+      con.closeConnection();
     }catch (IOException e){
       e.printStackTrace();
     }
