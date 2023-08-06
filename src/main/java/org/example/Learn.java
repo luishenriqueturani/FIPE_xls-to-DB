@@ -6,19 +6,19 @@ public class Learn {
 
     String[] words = vehicle.getModel().split(" ");
 
-    String m = words[0];
+    String model = words[0];
 
     String version = "";
 
     for (int i = 1; i < words.length; i++) {
       if(test(words[i])){
-        m += " " + words[i];
+        model += " " + words[i];
       }else{
         version += " " + words[i];
       }
     }
 
-    vehicle.setModel(m.trim());
+    vehicle.setModel(model.trim());
     vehicle.setVersion(version.trim());
 
     vehicle.setCategory( defineCategory(vehicle) );
