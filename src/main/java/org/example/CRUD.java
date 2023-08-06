@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class CRUD {
@@ -122,5 +124,71 @@ public class CRUD {
   }
 
 
+  public List<Vehicle> getBrands(String brand){
+    List<Vehicle> vehicles = new ArrayList<>();
+
+    String query = "SELECT * FROM brands WHERE label LIKE ?";
+
+    try (PreparedStatement statement = con.prepareStatement(query)) {
+      statement.setString(1, "%" + brand + "%");
+
+      try (ResultSet resultSet = statement.executeQuery()) {
+        while (resultSet.next()) {
+          vehicles.add(new Vehicle(
+              resultSet.getString("id")
+          ));
+        }
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return vehicles;
+  }
+
+  public List<Vehicle> getCategories(String category){
+    List<Vehicle> vehicles = new ArrayList<>();
+
+    String query = "SELECT * FROM categories WHERE label LIKE ?";
+
+    try (PreparedStatement statement = con.prepareStatement(query)) {
+      statement.setString(1, "%" + category + "%");
+
+      try (ResultSet resultSet = statement.executeQuery()) {
+        while (resultSet.next()) {
+          vehicles.add(new Vehicle(
+              resultSet.getString("id")
+          ));
+        }
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return vehicles;
+  }
+
+  public List<Vehicle> getModels(String model, String idBrand){
+    List<Vehicle> vehicles = new ArrayList<>();
+
+    String query = "SELECT * FROM models WHERE label LIKE ? AND id_brand LIKE ?";
+
+    try (PreparedStatement statement = con.prepareStatement(query)) {
+      statement.setString(1, "%" + model + "%");
+      statement.setString(2, "%" + idBrand + "%");
+
+      try (ResultSet resultSet = statement.executeQuery()) {
+        while (resultSet.next()) {
+          vehicles.add(new Vehicle(
+              resultSet.getString("id")
+          ));
+        }
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return vehicles;
+  }
 
 }

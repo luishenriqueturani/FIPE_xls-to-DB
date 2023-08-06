@@ -33,6 +33,6 @@ public class Learn {
   }
 
   public String defineCategory(Vehicle vehicle){
-    return "";
+    return "Carro";
   }
 }

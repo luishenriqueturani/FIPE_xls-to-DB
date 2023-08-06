@@ -13,12 +13,20 @@ public class Vehicle {
 
   private String category;
 
+  private String id;
+
+
 
   public Vehicle(String brand, String codFipe, ArrayList<YearPrice> yearPrices, String model) {
     this.brand = brand;
     this.codFipe = codFipe;
     this.yearPrices = yearPrices;
     this.model = model;
+  }
+
+  //para quando é feita a busca de marca
+  public Vehicle(String id){
+    this.id = id;
   }
 
   public String getBrand() {
@@ -69,12 +77,14 @@ public class Vehicle {
     this.category = category;
   }
 
-  @Override
-  public String toString() {
-    return "Vehicle{" +
-        "brand='" + brand + '\'' +
-        ", codFipe='" + codFipe + '\'' +
-        ", yearPrices=" + yearPrices +
-        '}';
+  public String getId() {
+    return id;
   }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+
+
 }

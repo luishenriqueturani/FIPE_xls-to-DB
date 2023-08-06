@@ -40,11 +40,14 @@ public class Main {
 
       Connector con = new Connector();
 
-      con.getConnection();
+      VehicleDTO dto = new VehicleDTO(con.getConnection());
 
       Learn learn = new Learn();
 
-      List<Vehicle> vehicles = new ArrayList<>();
+      //List<Vehicle> vehicles = new ArrayList<>();
+
+      int success = 0;
+      int fails = 0;
 
       for (Row row : sheet){
 
@@ -73,11 +76,16 @@ public class Main {
 
         Vehicle newVehicle = learn.make(vehicle);
 
-        vehicles.add( newVehicle );
+        if(dto.insert(newVehicle)){
+          success++;
+        }else{
+          fails++;
+        }
+        //vehicles.add( newVehicle );
 
       }
 
-      Gson gson = new Gson();
+      /*Gson gson = new Gson();
 
       String json = gson.toJson(vehicles);
 
@@ -88,7 +96,7 @@ public class Main {
         System.out.println("JSON escrito no arquivo com sucesso!");
       } catch (IOException e) {
         e.printStackTrace();
-      }
+      }*/
 
       workbook.close();
       fis.close();
