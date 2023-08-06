@@ -34,6 +34,7 @@ public class Connector {
         Class.forName(jdbcDriver);
 
         con = DriverManager.getConnection(url, userName, password);
+
       }else if (con.isClosed()){
         con = null;
         return getConnection();

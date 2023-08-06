@@ -1,9 +1,6 @@
 package org.example;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +19,45 @@ public class CRUD {
    * @param values
    * @return UUID
    */
-  public UUID insert(String table, String[] columns, String[] values){
+  /*public UUID insert(String table, String[] columns, String[] values) {
+    if (table == null || columns.length == 0 || values.length == 0 || columns.length != values.length) return null;
+
+    String query = "INSERT INTO " + table + "(";
+
+    for (String column : columns) {
+      query += column + ",";
+    }
+
+    query = Util.removeLastChar(query) + ") VALUES(";
+
+    for (String val : values) {
+      query += "?,";
+    }
+
+    query = Util.removeLastChar(query) + ");";
+
+    UUID generatedUUID = null;
+
+    try (PreparedStatement stmt = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+      for (int i = 1; i <= values.length; i++) {
+        stmt.setString(i, values[i - 1]);
+      }
+
+      stmt.executeUpdate();
+
+      try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+        //if (generatedKeys.next()) {
+        generatedKeys.next();
+          generatedUUID = (UUID) generatedKeys.getObject(1);
+        //}
+      }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return generatedUUID;
+  }*/
+  public String insert(String table, String[] columns, String[] values){
     if(table == null) return null;
     if(columns.length == 0 ) return null;
     if(values.length == 0) return null;
@@ -41,7 +76,8 @@ public class CRUD {
 
     query = Util.removeLastChar(query) + ");";
 
-    try (PreparedStatement stmt = con.prepareStatement(query)) {
+    try {
+      PreparedStatement stmt = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
       for (int i = 1; i <= values.length; i++ ){
         stmt.setString(i, values[i -1]);
@@ -49,11 +85,11 @@ public class CRUD {
 
       stmt.execute();
 
-      try (ResultSet generatedKeys = stmt.getGeneratedKeys()){
-        if(generatedKeys.next()){
-          return (UUID) generatedKeys.getObject(1);
-        }
+      ResultSet generatedKeys = stmt.getGeneratedKeys();
+      if(generatedKeys.next()){
+        return generatedKeys.getString(1);
       }
+
 
 
     } catch (SQLException e) {

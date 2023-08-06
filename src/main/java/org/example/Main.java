@@ -49,6 +49,8 @@ public class Main {
       int success = 0;
       int fails = 0;
 
+      String returns = "";
+
       for (Row row : sheet){
 
         List<YearPrice> yearPrices = new ArrayList<>();
@@ -76,10 +78,42 @@ public class Main {
 
         Vehicle newVehicle = learn.make(vehicle);
 
-        if(dto.insert(newVehicle)){
-          success++;
-        }else{
-          fails++;
+        switch(dto.insert(newVehicle)){
+          case 0:
+            success++;
+            break;
+          case -1:
+            returns += "Veículos nulo\n";
+            fails++;
+            break;
+          case -2:
+            returns += "Categoria nulo\n";
+            fails++;
+            break;
+          case -3:
+            returns += "Marca nulo\n";
+            fails++;
+            break;
+          case -4:
+            returns += "Modelo nulo\n";
+            fails++;
+            break;
+          case -6:
+            returns += "Falha ao inserir a categoria\n";
+            fails++;
+            break;
+          case -8:
+            returns += "Falha ao inserir a marca\n";
+            fails++;
+            break;
+          case -10:
+            returns += "Falha ao inserir modelo\n";
+            fails++;
+            break;
+          case -11:
+            returns += "Falha ao inserir versão\n";
+            fails++;
+            break;
         }
         //vehicles.add( newVehicle );
 
@@ -102,6 +136,8 @@ public class Main {
       fis.close();
 
       con.closeConnection();
+
+      System.out.println("Sucessos: " + success + "\nFalhas: " + fails + "\nErros\n" + returns);
     }catch (IOException e){
       e.printStackTrace();
     }

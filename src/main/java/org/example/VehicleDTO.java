@@ -12,34 +12,35 @@ public class VehicleDTO {
     this.conn = conn;
   }
 
-  public boolean insert(Vehicle vehicle){
-    if(vehicle == null) return false;
+  public int insert(Vehicle vehicle){
+    if(vehicle == null) return -1;
 
-    if(vehicle.getCategory() == null) return false;
+    if(vehicle.getCategory() == null) return -2;
 
-    if(vehicle.getBrand() == null) return false;
+    if(vehicle.getBrand() == null) return -3;
 
-    if(vehicle.getModel() == null) return false;
+    if(vehicle.getModel() == null) return -4;
 
     CRUD crud = new CRUD(this.conn);
 
     //busca a categoria
     List<Vehicle> categories = crud.getCategories(vehicle.getCategory());
 
-    if(categories == null) return false;
-
     String idCategory;
     //se encontrar a categoria usa ela, senão insere uma nova
     if(categories.isEmpty()){
-      UUID insertedCategory = crud.insert(
+      idCategory = crud.insert(
+      //UUID insertedCategory = crud.insert(
           "categories",
           new String[]{"label"},
           new String[]{vehicle.getCategory()}
       );
 
-      if(insertedCategory == null) return false;
+      /*if(insertedCategory == null){
+        return -6;
+      }*/
 
-      idCategory = insertedCategory.toString();
+      //idCategory = insertedCategory.toString();
     }else{
       idCategory = categories.get(0).getId();
     }
@@ -48,21 +49,22 @@ public class VehicleDTO {
     //busca vehicles por marca
     List<Vehicle> brands = crud.getBrands(vehicle.getBrand());
 
-    if(brands == null) return false;
-
     String idBrand;
     //if retornar um resultado usa o resultado recebido, senão insere a marca
 
     if(brands.isEmpty()){
-      UUID insertedBrand = crud.insert(
+      idBrand = crud.insert(
+          //UUID insertedBrand = crud.insert(
           "brands",
           new String[]{"label"},
           new String[]{vehicle.getBrand()}
       );
 
-      if(insertedBrand == null) return false;
+      /*if(insertedBrand == null){
+        return -8;
+      }*/
 
-      idBrand = insertedBrand.toString();
+      //idBrand = insertedBrand.toString();
     }else {
       idBrand = brands.get(0).getId();
     }
@@ -71,39 +73,44 @@ public class VehicleDTO {
     //busca o modelo
     List<Vehicle> models = crud.getModels(vehicle.getModel(), idBrand);
 
-    if(models == null) return false;
-
     String idModel;
     //se retornar um resultado usa o resultado, senão insere um novo
     if(models.isEmpty()){
-      UUID insertedModel = crud.insert(
+      idModel = crud.insert(
+          //UUID insertedModel = crud.insert(
           "models",
           new String[]{"label", "id_brand", "id_category"},
           new String[]{vehicle.getModel(), idBrand, idCategory}
       );
 
-      if(insertedModel == null) return false;
+      /*if(insertedModel == null){
+        return -10;
+      }*/
 
-      idModel = insertedModel.toString();
+      //idModel = insertedModel.toString();
     }else {
       idModel = models.get(0).getId();
     }
     models = null;
 
     //insere a versão
-    UUID insertedVersion = crud.insert(
+    String idVersion = crud.insert(
+    //UUID insertedVersion = crud.insert(
         "versions",
         new String[]{"label", "id_model"},
         new String[]{vehicle.getVersion(), idModel}
     );
 
-    if(insertedVersion == null) return false;
+    /*if(insertedVersion == null){
+      return -11;
+    }*/
 
-    String idVersion = insertedVersion.toString();
+    //String idVersion = insertedVersion.toString();
 
     //percorre os anos modelos e os salva
     for (YearPrice yp: vehicle.getYearPrices() ) {
-      UUID insertedYearPrice = crud.insert(
+      String insertedYearPrice = crud.insert(
+      //UUID insertedYearPrice = crud.insert(
           "year_versions_prices",
           new String[]{"id_version", "price", "year", "cod_fipe"},
           new String[]{idVersion, String.valueOf(yp.getPrice()), String.valueOf(yp.getYear()), vehicle.getCodFipe()}
@@ -111,7 +118,7 @@ public class VehicleDTO {
     }
 
     //retorna true ou false
-    return true;
+    return 0;
   }
 
 
