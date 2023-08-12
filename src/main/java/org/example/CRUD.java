@@ -227,4 +227,27 @@ public class CRUD {
     return vehicles;
   }
 
+  public List<Vehicle> getVersion(String version, String idModel){
+    List<Vehicle> vehicles = new ArrayList<>();
+
+    String query = "SELECT * FROM versions WHERE label LIKE ? AND id_model LIKE ?";
+
+    try (PreparedStatement statement = con.prepareStatement(query)) {
+      statement.setString(1, "%" + version + "%");
+      statement.setString(2, "%" + idModel + "%");
+
+      try (ResultSet resultSet = statement.executeQuery()) {
+        while (resultSet.next()) {
+          vehicles.add(new Vehicle(
+              resultSet.getString("id")
+          ));
+        }
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return vehicles;
+  }
+
 }

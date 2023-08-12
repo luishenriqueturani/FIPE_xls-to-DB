@@ -29,18 +29,20 @@ public class VehicleDTO {
     String idCategory;
     //se encontrar a categoria usa ela, senão insere uma nova
     if(categories.isEmpty()){
-      idCategory = crud.insert(
-      //UUID insertedCategory = crud.insert(
+      //idCategory = crud.insert(
+      String insertedCategory = crud.insert(
           "categories",
           new String[]{"label"},
           new String[]{vehicle.getCategory()}
       );
 
-      /*if(insertedCategory == null){
-        return -6;
-      }*/
+      if(insertedCategory == null){
+        insertedCategory = crud.getCategories( vehicle.getCategory() ).get(0).getId();
 
-      //idCategory = insertedCategory.toString();
+        if(insertedCategory == null) return -6;
+      }
+
+      idCategory = insertedCategory;
     }else{
       idCategory = categories.get(0).getId();
     }
@@ -53,18 +55,20 @@ public class VehicleDTO {
     //if retornar um resultado usa o resultado recebido, senão insere a marca
 
     if(brands.isEmpty()){
-      idBrand = crud.insert(
-          //UUID insertedBrand = crud.insert(
+      //idBrand = crud.insert(
+      String insertedBrand = crud.insert(
           "brands",
           new String[]{"label"},
           new String[]{vehicle.getBrand()}
       );
 
-      /*if(insertedBrand == null){
-        return -8;
-      }*/
+      if(insertedBrand == null){
+        insertedBrand = crud.getBrands( vehicle.getBrand() ).get(0).getId();
 
-      //idBrand = insertedBrand.toString();
+        if(insertedBrand == null) return -8;
+      }
+
+      idBrand = insertedBrand;
     }else {
       idBrand = brands.get(0).getId();
     }
@@ -76,18 +80,20 @@ public class VehicleDTO {
     String idModel;
     //se retornar um resultado usa o resultado, senão insere um novo
     if(models.isEmpty()){
-      idModel = crud.insert(
-          //UUID insertedModel = crud.insert(
+      //idModel = crud.insert(
+      String insertedModel = crud.insert(
           "models",
           new String[]{"label", "id_brand", "id_category"},
           new String[]{vehicle.getModel(), idBrand, idCategory}
       );
 
-      /*if(insertedModel == null){
-        return -10;
-      }*/
+      if(insertedModel == null){
+        insertedModel = crud.getModels(vehicle.getModel(), idBrand).get(0).getId();
 
-      //idModel = insertedModel.toString();
+        if(insertedModel == null) return -10;
+      }
+
+      idModel = insertedModel;
     }else {
       idModel = models.get(0).getId();
     }
@@ -95,22 +101,20 @@ public class VehicleDTO {
 
     //insere a versão
     String idVersion = crud.insert(
-    //UUID insertedVersion = crud.insert(
         "versions",
         new String[]{"label", "id_model"},
         new String[]{vehicle.getVersion(), idModel}
     );
 
-    /*if(insertedVersion == null){
-      return -11;
-    }*/
+    if(idVersion == null){
+      idVersion = crud.getVersion(vehicle.getVersion(), idModel).get(0).getId();
 
-    //String idVersion = insertedVersion.toString();
+      if(idVersion == null) return -11;
+    }
 
     //percorre os anos modelos e os salva
     for (YearPrice yp: vehicle.getYearPrices() ) {
       String insertedYearPrice = crud.insert(
-      //UUID insertedYearPrice = crud.insert(
           "year_versions_prices",
           new String[]{"id_version", "price", "year", "cod_fipe"},
           new String[]{idVersion, String.valueOf(yp.getPrice()), String.valueOf(yp.getYear()), vehicle.getCodFipe()}
