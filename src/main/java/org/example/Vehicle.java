@@ -15,6 +15,7 @@ public class Vehicle {
 
   private String id;
 
+  private String wordtest;
 
 
   public Vehicle(String brand, String codFipe, ArrayList<YearPrice> yearPrices, String model) {
@@ -85,6 +86,11 @@ public class Vehicle {
     this.id = id;
   }
 
+  public String getWordtest() {
+    return wordtest;
+  }
 
-
+  public void setWordtest(String wordtest) {
+    this.wordtest = wordtest;
+  }
 }
