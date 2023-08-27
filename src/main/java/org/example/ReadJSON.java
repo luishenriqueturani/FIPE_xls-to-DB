@@ -38,7 +38,7 @@ public class ReadJSON {
 
       Vehicle newVehicle = learn.make(vehicle);
 
-      switch(dto.insert(newVehicle)){
+      switch(dto.insertFromJSON(newVehicle)){
         case 0:
           success++;
           break;
@@ -103,6 +103,9 @@ public class ReadJSON {
   }
 
   public static float valueStringToFloat(String value){
+    if(value == null){
+      return 0;
+    }
     String cleared = value.replaceAll("[^\\d,]", "")
                           .replace(",", ".");
 

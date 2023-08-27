@@ -1,5 +1,7 @@
 package org.example;
 
+import org.apache.commons.text.WordUtils;
+
 import java.sql.Connection;
 import java.util.List;
 import java.util.UUID;
@@ -212,12 +214,20 @@ public class VehicleDTO {
     }
     models = null;
 
-    //insere a versão
-    String idVersion = crud.insert(
-        "versions",
-        new String[]{"label", "id_model"},
-        new String[]{vehicle.getVersion(), idModel}
-    );
+    List<Vehicle> versions = crud.getVersion(vehicle.getVersion(), idModel);
+
+    String idVersion;
+
+    if(versions.isEmpty()){
+      //insere a versão
+      idVersion = crud.insert(
+          "versions",
+          new String[]{"label", "id_model"},
+          new String[]{vehicle.getVersion(), idModel}
+      );
+    }else{
+      idVersion = versions.get(0).getId();
+    }
 
     if(idVersion == null){
       idVersion = crud.getVersion(vehicle.getVersion(), idModel).get(0).getId();

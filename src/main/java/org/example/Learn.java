@@ -36,8 +36,7 @@ public class Learn {
   }
 
   public Vehicle make(Vehicle vehicle){
-
-    String[] words = vehicle.getModel().split(" ");
+    String[] words = vehicle.getModel() == null ? "".split(" ") : vehicle.getModel().split(" ");
 
     String model = words[0];
 
