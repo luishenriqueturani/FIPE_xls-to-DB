@@ -19,7 +19,7 @@ public class Learn {
 
   private List<Brand> getLearnedContent(){
 
-    String path = System.getProperty("user.home") + "/Documentos/base.json";
+    String path = System.getProperty("user.home") + "/Downloads/fipe/base.json";
 
     try (FileReader reader = new FileReader(path)) {
       Gson gson = new Gson();
@@ -69,6 +69,6 @@ public class Learn {
   }
 
   public String defineCategory(Vehicle vehicle){
-    return "Carro";
+    return vehicle.getCategory() == null || vehicle.getCategory().isEmpty() ? "Carro" : vehicle.getCategory();
   }
 }
